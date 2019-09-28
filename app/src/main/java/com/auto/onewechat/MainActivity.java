@@ -15,6 +15,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -22,13 +23,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.auto.onewechat.interfaces.InfoCallback;
-import com.auto.onewechat.utils.CopyFile;
 import com.auto.onewechat.utils.FileTools;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = "main";
+    private static final String TAG = "com.auto.onewechat";
     private String start_tag;
     private String end_tag;
     private RadioGroup radioGroup;
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         userSettings = getSharedPreferences("old_file", 0);
         oldFile = findViewById(R.id.old_file);
-        oldFile.setText("上次的文件名：" + userSettings.getString("olde_file", ""));
+        oldFile.setText("上次的手机号：" + userSettings.getString("olde_file", ""));
     }
 
     @Override
@@ -84,9 +84,10 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         try {
-                            Thread.sleep(1000);
+                            Log.e(TAG,"正在输出文件");
                             FileTools fileTools = new FileTools();
-                            fileTools.writeTxtToFile(inPut, SDCARD, "WeChat_Number.txt");
+                            fileTools.writeTxtToFile(inPut+"\n", SDCARD, "WeChat_Number.txt");
+                            Thread.sleep(1000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }

@@ -90,7 +90,7 @@ public class FileTools {
                 file.mkdir();
             }
         } catch (Exception e) {
-            Log.i("error:", e + "");
+            Log.i("error:", e + "  文件夹创建失败");
         }
     }
 
