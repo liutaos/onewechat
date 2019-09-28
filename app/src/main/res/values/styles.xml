@@ -1,0 +1,20 @@
+<!--
+  ~ ********************************************************************************
+  ~         文 件：styles.xml     模 块：app      项 目：onewechat
+  ~         当前修改时间：2019年09月28日 11:08:46
+  ~         上次修改时间：2019年09月25日 11:13:46
+  ~         作者：liutaos@qq.com        Copyright (c) 2019
+  ~ ********************************************************************************
+  -->
+
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+</resources>

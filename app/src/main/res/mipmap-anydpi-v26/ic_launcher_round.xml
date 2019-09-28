@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ ********************************************************************************
+  ~         文 件：ic_launcher_round.xml     模 块：app      项 目：onewechat
+  ~         当前修改时间：2019年09月28日 11:08:46
+  ~         上次修改时间：2019年09月25日 11:13:46
+  ~         作者：liutaos@qq.com        Copyright (c) 2019
+  ~ ********************************************************************************
+  -->
+
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@drawable/ic_launcher_background" />
+    <foreground android:drawable="@drawable/ic_launcher_foreground" />
+</adaptive-icon>

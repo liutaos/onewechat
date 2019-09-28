@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ ********************************************************************************
+  ~         文 件：activity_main.xml     模 块：app      项 目：onewechat
+  ~         当前修改时间：2019年09月28日 11:08:46
+  ~         上次修改时间：2019年09月26日 13:43:56
+  ~         作者：liutaos@qq.com        Copyright (c) 2019
+  ~ ********************************************************************************
+  -->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+    <Button
+        android:id="@+id/runBtn"
+        android:layout_width="222dp"
+        android:layout_height="37dp"
+        android:text="@string/start"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="70dp"
+        tools:layout_editor_absoluteY="361dp" />
+
+    <TextView
+        android:id="@+id/sjh_tv"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:text="手机号："
+        app:layout_constraintEnd_toStartOf="@+id/input_phone_number"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="299dp" />
+
+    <EditText
+        android:id="@+id/input_phone_number"
+        android:layout_width="222dp"
+        android:layout_height="50dp"
+        android:textColor="#FF000000"
+        android:textSize="20sp"
+
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="70dp"
+        tools:layout_editor_absoluteY="283dp" />
+
+    <TextView
+        android:id="@+id/old_file"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="旧文本"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="160dp"
+        tools:layout_editor_absoluteY="338dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

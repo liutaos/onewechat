@@ -1,0 +1,14 @@
+<!--
+  ~ ********************************************************************************
+  ~         文 件：colors.xml     模 块：app      项 目：onewechat
+  ~         当前修改时间：2019年09月28日 11:08:46
+  ~         上次修改时间：2019年09月25日 11:13:46
+  ~         作者：liutaos@qq.com        Copyright (c) 2019
+  ~ ********************************************************************************
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <color name="colorPrimary">#FF0000</color>
+    <color name="colorPrimaryDark">#FFCCCC</color>
+    <color name="colorAccent">#00FFFF</color>
+</resources>

@@ -1,0 +1,8 @@
+<component name="CopyrightManager">
+  <settings default="版权">
+    <module2copyright>
+      <element module="Project Files" copyright="版权" />
+      <element module="All" copyright="版权" />
+    </module2copyright>
+  </settings>
+</component>

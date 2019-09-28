@@ -1,0 +1,16 @@
+<!--
+  ~ ********************************************************************************
+  ~         文 件：strings.xml     模 块：app      项 目：onewechat
+  ~         当前修改时间：2019年09月28日 11:08:46
+  ~         上次修改时间：2019年09月26日 13:43:56
+  ~         作者：liutaos@qq.com        Copyright (c) 2019
+  ~ ********************************************************************************
+  -->
+
+<resources>
+    <string name="app_name">onewechat</string>
+    <string name="saveconfig">保存配置</string>
+    <string name="stattask">启动</string>
+    <string name="local_phone_text_file">文件名:</string>
+    <string name="start">启动</string>
+</resources>
