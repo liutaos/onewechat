@@ -43,13 +43,13 @@ public final class RootCmd {
     /**
      * 执行命令并且输出结果
      */
-    public static String execRootCmd(String cmd) {
+    public String execRootCmd(String cmd) {
         String result = "";
         DataOutputStream dos = null;
         DataInputStream dis = null;
 
         try {
-            Process p = Runtime.getRuntime().exec("su");// 经过Root处理的android系统即有su命令
+            Process p = Runtime.getRuntime().exec("su");  // 经过Root处理的android系统即有su命令
             dos = new DataOutputStream(p.getOutputStream());
             dis = new DataInputStream(p.getInputStream());
 

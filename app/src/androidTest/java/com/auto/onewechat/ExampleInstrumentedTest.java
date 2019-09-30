@@ -86,18 +86,22 @@ public class ExampleInstrumentedTest {
             mProcesser.startApp();
             mProcesser.waitAMonent(10);
             goToOneStart();
-            goToUpdate();
+            //goToUpdate();
             mProcesser.waitAMonent(2);
-            goToHomeInterface();
+            //goToHomeInterface();
             mProcesser.waitAMonent(1);
             goToCloseRedPkg();
             mProcesser.waitAMonent(2);
-
+            //while (maintask) {
+            mainTasks();
+            //}
         } catch (Exception e) {
             e.printStackTrace();
             mProcesser.pritLog("错误");
         }
     }
+
+    boolean maintask = true;
 
     public static String getStringNoBlank(String str) {
 
@@ -148,8 +152,9 @@ public class ExampleInstrumentedTest {
 
     public void goToOneStart() {
         mProcesser.pritLog("============== goToOneStart ===================");
+        //android.lite.clean:id/oh    旧版本清理大师ID android.lite.clean:id/s4
         UiObject userOK = new UiObject(new UiSelector().className("android.widget.RelativeLayout")
-                .resourceId("android.lite.clean:id/s4"));
+                .resourceId("android.lite.clean:id/oh"));
         try {
             userOK.click();
         } catch (UiObjectNotFoundException e) {
@@ -166,21 +171,17 @@ public class ExampleInstrumentedTest {
         mProcesser.pritLog("====================goToCloseRedPkg()=====================");
         UiObject userOpenRedPkg, userLayout;
         try {
-            if (mProcesser.exitObjById("android.lite.clean:id/x3", 1)) {
+            //android.lite.clean:id/qv    旧版本清理大师ID android.lite.clean:id/x3
+            if (mProcesser.exitObjById("android.lite.clean:id/qv", 1)) {
                 userOpenRedPkg = new UiObject(new UiSelector().className("android.widget.ImageView")
-                        .resourceId("android.lite.clean:id/x3"));
+                        .resourceId("android.lite.clean:id/qv"));
                 userOpenRedPkg.click();
                 mProcesser.waitAMonent(1);
                 goSignIn();
-            } else {
-                userLayout = new UiObject(new UiSelector().className("android.widget.LinearLayout")
-                        .resourceId("android.lite.clean:id/a6r"));
-                userLayout.click();
             }
         } catch (Exception e) {
             e.printStackTrace();
             mProcesser.waitAMonent(1);
-            mDevice.pressBack();
         }
 
     }
@@ -192,7 +193,6 @@ public class ExampleInstrumentedTest {
         new Thread(new Runnable() {
             @Override
             public void run() {
-
                 while (true) {
                     mProcesser.waitAMonent(2);
                     try {
@@ -202,16 +202,30 @@ public class ExampleInstrumentedTest {
                             UiObject2 ignore = mDevice.wait(Until.findObject(By.text("忽略")), 500);
                             ignore.click();
                         }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
                         mProcesser.waitAMonent(1);
-                    } finally {
+                        if (mProcesser.exitObjById("android.lite.clean:id/x3", 1)) {
+                            UiObject userOpenRedPkg = new UiObject(new UiSelector().className("android.widget.ImageView")
+                                    .resourceId("android.lite.clean:id/x3"));
+                            userOpenRedPkg.click();
+                            mProcesser.waitAMonent(1);
+                            goSignIn();
+                        }
+                        mProcesser.waitAMonent(1);
+                        if (mDevice.hasObject(By.text("登录任务中心"))) {
+                            mProcesser.waitAMonent(1);
+                            goSignIn();
+                            mProcesser.waitAMonent(1);
+                            maintask = false;
+                            mainTasks();
+                        }
                         try {
                             Thread.sleep(1000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        mProcesser.waitAMonent(1);
                     }
                 }
             }
@@ -231,16 +245,16 @@ public class ExampleInstrumentedTest {
 
         mProcesser.pritLog("====================goSignIn()=====================");
         try {
-            while (mDevice.hasObject(By.text("手机号码一键登录"))) {
-                UiObject2 userSignin = mDevice.wait(Until.findObject(By.text("手机号码一键登录")), 500);
+            if (mDevice.hasObject(By.text("使用手机号登录"))) {
+                UiObject2 userSignin = mDevice.wait(Until.findObject(By.text("使用手机号登录")), 500);
                 userSignin.click();
-                mProcesser.waitAMonent(30);
-                Thread.sleep(30 * 1000);
+                mProcesser.waitAMonent(1);
             }
             mProcesser.pritLog("============== HttpGet()  初始化 请求数据 ===================");
             httpGet.getData();
             mProcesser.waitAMonent(2);
-            UiObject userSignIns = new UiObject(new UiSelector().className("android.widget.EditText").resourceId("android.lite.clean:id/wj"));
+            //  android.lite.clean:id/a0q  旧版本 ->   android.lite.clean:id/wj
+            UiObject userSignIns = new UiObject(new UiSelector().className("android.widget.EditText").resourceId("android.lite.clean:id/a0q"));
 
             //-----------------     取手机号   指定号码      ----
             cellPhoneNumber = httpGet.getCellNumberZJSJH(cellPhoneNumber);
@@ -248,11 +262,14 @@ public class ExampleInstrumentedTest {
             boolean result = false;
             int i = 0;
             sms = null;
-            //------------------------输入手机号
-            if (mProcesser.exitObjById("android.lite.clean:id/wj", 1)) {
-                mProcesser.pritLog(" =======   cellPhoneNumber : +++++++++++++++    " + cellPhoneNumber);
-                userSignIns.setText(cellPhoneNumber);
-            }
+            //------------------------输入手机号  android.lite.clean:id/a0q  旧版本ID android.lite.clean:id/wj
+            //if (mProcesser.exitObjById("android.lite.clean:id/a0q", 1)) {
+            mProcesser.pritLog(" =======   cellPhoneNumber : +++++++++++++++    " + cellPhoneNumber);
+            userSignIns.legacySetText(cellPhoneNumber);
+            UiObject2 next = mDevice.wait(Until.findObject(By.text("下一步")), 500);
+            next.click();
+            mProcesser.waitAMonent(2);
+            //}
             while (!result && sms == null) {
                 sms = httpGet.getSmsMsg(cellPhoneNumber);
                 mProcesser.pritLog("-----------cellPhoneNumber ---------短信获取次数------   " + i);
@@ -269,13 +286,17 @@ public class ExampleInstrumentedTest {
                 i++;
                 if (i == 6) {
                     System.out.println("======   ==== result = false ======");
-                    result = true;
+                    if (mDevice.hasObject(By.text("验证码超时"))) {
+                        mDevice.wait(Until.findObject(By.text("确定")), 500).click();
+                        i = 0;
+                        if (i == 6) {
+                            result = true;
+                        }
+                    } else {
+                        result = true;
+                    }
+
                 }
-            }
-            if (sms == null) {
-                next = false;
-                System.out.println("==================   SMS  信息== 空  下一步 =========     " + sms);
-                return;
             }
             String sms_number = Pattern.compile("[^0-9]").matcher(sms).replaceAll("");
             System.out.println("==================   SMS  信息==================     " + sms);
@@ -299,17 +320,21 @@ public class ExampleInstrumentedTest {
             System.out.println("          空         ");
             return;
         }
-        UiObject smstext1 = new UiObject(new UiSelector().className("android.widget.TextView").instance(2));
+        //android.lite.clean:id/a0s  android.widget.EditText
+        // UiObject smstext1 = new UiObject(new UiSelector().className("android.widget.TextView").instance(2)); 旧版本
+        UiObject smstext1 = new UiObject(new UiSelector().className("android.widget.EditText").resourceId("android.lite.clean:id/a0s"));
         smstext1.legacySetText(sms_number);
         sms = null;
         mProcesser.waitAMonent(2);
         httpGet.singOut();
-        //okGotIt();
-        if (mDevice.hasObject(By.text("知道了"))) {
-            UiObject2 objNext = mDevice.wait(Until.findObject(By.text("知道了")), 500);
-            objNext.click();
+        if (mDevice.hasObject(By.text("登录"))) {
+            mDevice.wait(Until.findObject(By.text("登录")), 500).click();
         }
-
+        mProcesser.waitAMonent(1);
+        if (mDevice.hasObject(By.text("下一步"))) {
+            mDevice.wait(Until.findObject(By.text("下一步")), 500).click();
+        }
+        //okGotIt();
     }
 
     /**
@@ -333,7 +358,6 @@ public class ExampleInstrumentedTest {
      */
 
     public void mainTasks() throws Exception {
-
         //金币明细  Details of gold coins
         System.out.println("=================  mainTasks () 执行业务模块 ========================");
         mProcesser.waitAMonent(2);
@@ -355,21 +379,22 @@ public class ExampleInstrumentedTest {
     public void detailed() throws Exception {
         boolean closeDeataild = false;
         //UiObject2 detailed;
-        UiObject detailed1, titleDetailde;
-        detailed1 = new UiObject(new UiSelector().className("android.widget.TextView").resourceId("android.lite.clean:id/zy"));
-        if (detailed1 != null) {
-            //detailed1 = mDevice.wait(Until.findObject(By.text("金币明细")), 500);
-            detailed1.click();
-            mDevice.waitForWindowUpdate(CLEAN_PKG_NAME, 3 * 1000);
-            Thread.sleep(3000);
-            Log.e(TAG, "  detailed1   " + detailed1);
-            titleDetailde = new UiObject(new UiSelector().className("android.widget.TextView").resourceId("android.lite.clean:id/rw"));
-            if (titleDetailde.getText().equals("金币明细")) {
-                mProcesser.waitAMonent(1);
-                mDevice.pressBack();
-            }
-            Thread.sleep(1000);
+        UiObject detailed, titleDeClose;
+        //detailed1 = new UiObject(new UiSelector().className("android.widget.TextView").resourceId("android.lite.clean:id/zy"));
+
+        //android.lite.clean:id/a2_   android.widget.LinearLayout  新版本
+        detailed = new UiObject(new UiSelector().className("android.widget.LinearLayout").resourceId("android.lite.clean:id/a2_"));
+        if (detailed != null && mDevice.hasObject(By.text("金币明细"))) {
+            detailed.click();
+            mProcesser.waitAMonent(1);
         }
+        //  android.lite.clean:id/wl    android.widget.ImageView
+        titleDeClose = new UiObject(new UiSelector().className("android.widget.ImageView").resourceId("android.lite.clean:id/wl"));
+        if (titleDeClose != null && mDevice.hasObject(By.text("金币明细"))) {
+            titleDeClose.click();
+            mProcesser.waitAMonent(1);
+        }
+
     }
 
     /**
@@ -379,49 +404,82 @@ public class ExampleInstrumentedTest {
     public void timerTask() throws Exception {
         Log.e(TAG, "================       提现任务模块      ======================");
         //android.lite.clean:id/h_   android.widget.ImageView
-        UiObject touxiang;
-        touxiang = new UiObject(new UiSelector().className("android.widget.ImageView").resourceId("android.lite.clean:id/h").instance(5));
-        if (touxiang != null) {
-            mProcesser.waitAMonent(1);
-            Log.e(TAG, "==       touxiang   ===========" + touxiang.isClickable());
-            touxiang.clickAndWaitForNewWindow();
-        }
+        int w = mDevice.getDisplayWidth();
+        int h = mDevice.getDisplayHeight();
+        UiObject touxiang, closeBack;
+        //  //  android.lite.clean:id/wl    android.widget.ImageView
         //[216,117][912,198]
-        //mDevice.getInstance().click(456,150);
+
+        Log.e(TAG, "timerTask: w: " + w + "  h  :" + h);
+        mProcesser.waitAMonent(2);
+        /*touxiang = new UiObject(new UiSelector().className("android.widget.ImageView").resourceId("android.lite.clean:id/wl"));
+        if (touxiang != null) {
+            Log.e(TAG, "timerTask:   点击头像");
+            touxiang.click();
+            mProcesser.waitAMonent(2);
+        }else{
+            Thread.sleep(3);
+            Log.e(TAG, "timerTask:   点击头像");
+            touxiang = new UiObject(new UiSelector().className("android.widget.ImageView").resourceId("android.lite.clean:id/wl"));
+            touxiang.click();
+            mProcesser.waitAMonent(2);
+        }*/
+        mDevice.click(80, 100);
         mProcesser.waitAMonent(3);
-        Thread.sleep(3 * 1000);
         UiObject2 weChat = mDevice.wait(Until.findObject(By.text("微信号")), 500);
+        while (weChat == null) {
+            mDevice.click(80, 100);
+            mProcesser.waitAMonent(3);
+            Thread.sleep(3);
+            weChat = mDevice.wait(Until.findObject(By.text("微信号")), 500);
+        }
         if (mDevice.hasObject(By.text("微信号")) && mDevice.hasObject(By.text("未绑定"))) {
             weChat.click();
             mProcesser.waitAMonent(3);
-        }
-        //解除已绑定的号
-        UiObject okbound = new UiObject(new UiSelector().className("android.widget.RelativeLayout").resourceId("android.lite.clean:id/h6"));
-        okbound.clickAndWaitForNewWindow();
-        mDevice.pressBack();
-        mProcesser.waitAMonent(3);
-        thread.start();
-        //--------------------  定时执行 提现任务
-        showDayTime();
+        } else {
+            weChat = mDevice.wait(Until.findObject(By.text("微信号")), 500);
+            weChat.click();
+            mProcesser.waitAMonent(3);
+            if (mDevice.hasObject(By.text("更多操作"))) {
+                //解除已绑定的号
+                UiObject2 jiechu = mDevice.wait(Until.findObject(By.text("解除绑定")), 500);
+                jiechu.click();
+                mProcesser.waitAMonent(1);
+                if (mDevice.hasObject(By.text("确认解绑？"))) {
+                    mDevice.wait(Until.findObject(By.text("确定")), 500).click();
+                    mProcesser.waitAMonent(3);
+                }
+                weChat = mDevice.wait(Until.findObject(By.text("微信号")), 500);
+                weChat.click();
+                mProcesser.waitAMonent(3);
+            }
 
+            if (mDevice.hasObject(By.text("确定"))) {
+                mDevice.wait(Until.findObject(By.text("确定")), 500).click();
+                mProcesser.waitAMonent(3);
+                weChat = mDevice.wait(Until.findObject(By.text("微信号")), 500);
+                weChat.click();
+                mProcesser.waitAMonent(3);
+            }
+        }
+        mProcesser.waitAMonent(3);
+        closeBack = new UiObject(new UiSelector().className("android.widget.ImageView").resourceId("android.lite.clean:id/wl"));
+        //if ( mDevice.hasObject(By.text("账号资料"))) {
+        //closeBack.click();
+        mDevice.pressBack();
+        mProcesser.waitAMonent(1);
+        //}
+        //--------------------  定时执行 提现任务
+
+        showDayTime();
+        while (timerStop) {
+            Thread.sleep(180 * 1000);
+            Log.e(TAG, "================     等待 8：30    ========================");
+        }
     }
 
     Date defaultdate;
-    Thread thread = new Thread(new Runnable() {
-        @Override
-        public void run() {
-            try {
-                while(true) {
-                    Thread.sleep(180 * 1000);
-                    int w = UiDevice.getInstance().getDisplayWidth();
-                    int h = UiDevice.getInstance().getDisplayHeight();
-                    UiDevice.getInstance().click(h / 2, w / 2);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    });
+    static boolean timerStop = true;
 
     /**
      * 定时   每日 8：30执行
@@ -431,77 +489,89 @@ public class ExampleInstrumentedTest {
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
-        calendar.set(year, month, day, 8, 30, 00);//设置执行时间
+        calendar.set(year, month, day, 8, 29, 40);//设置执行时间
         defaultdate = calendar.getTime();
         if (defaultdate.before(new Date())) {
             // 将发送时间设为明天
             calendar.add(Calendar.DATE, 1);
             defaultdate = calendar.getTime();
         }
+        Float w = Float.valueOf(mDevice.getDisplayWidth()); // h获取屏幕宽度
+        Float h = Float.valueOf(mDevice.getDisplayHeight());// h获取屏幕高度
         Timer dTimer = new Timer();
         dTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 try {
-                    thread.stop();
-                    detailed();
+                    //detailed();
                     System.out.println("当前执行时间" + defaultdate);
-                    UiObject jbNumber = new UiObject(new UiSelector().className("android.widget.TextView").resourceId("android.lite.clean:id/zw"));
+                    // android.lite.clean:id/a2a    旧版本  android.lite.clean:id/zw
+                    UiObject jbNumber = new UiObject(new UiSelector().className("android.widget.TextView").resourceId("android.lite.clean:id/a2a"));
                     String jbNumberStr = jbNumber.getText();
                     Integer i = new Integer(jbNumberStr);  // 10
+                    Log.e(TAG, "run:      jbNumberStr:" + jbNumberStr);
                     int jbNumberInt = i.intValue();
-                    if (1000000 > jbNumberInt && jbNumberInt > 500000 || jbNumberInt > 1000000) {
+                    if (mDevice.hasObject(By.text("可提现"))) {
                         //点击提现
-                        UiObject tixian = new UiObject(new UiSelector().className("android.widget.TextView").resourceId("android.lite.clean:id/zz"));
-                        tixian.click();
-
-                        int w = UiDevice.getInstance().getDisplayWidth();//获取屏幕宽度  1080   720
-
-                        int h = UiDevice.getInstance().getDisplayHeight();//获取屏幕高度  1920   1080
-
-                        //  838  1145
-                        if (jbNumberInt > 1000000) {
-                            //830  970   大于一百万金币的
-                            //--------- 点击 10元
-                            mProcesser.waitAMonent(1);
-                            while (!mDevice.getInstance().click((w / 1080) * 825, (h / 1920) * 970)) {
-                                Thread.sleep(2000);
-                                mDevice.getInstance().click((w / 1080) * 825, (h / 1920) * 970);
-
-                            }
-                            mProcesser.waitAMonent(1);
-                            // -------  点击 立即提现
-                            while (!mDevice.getInstance().click((w / 1080) * 830, (h / 1920) * 1145)) {
-                                Thread.sleep(2000);
-                                mDevice.getInstance().click((w / 1080) * 830, (h / 1920) * 1145);
-                            }
-                            mProcesser.waitAMonent(3);
-                            //  ----------  点击  确定 提现
-                            while (!mDevice.getInstance().click((w / 1080) * 530, (h / 1920) * 1100)) {
-                                Thread.sleep(2000);
-                                mDevice.getInstance().click((w / 1080) * 530, (h / 1920) * 1100);
-                            }
-                        } else {
-                            //大于五十万金币小于一百万金币的
-                            //--------- 点击 5元
-                            while (!mDevice.getInstance().click((w / 1080) * 535, (h / 1920) * 980)) {
-                                Thread.sleep(2000);
-                                mDevice.getInstance().click((w / 1080) * 535, (h / 1920) * 980);
-                            }
-                            // -------  点击 立即提现
-                            mProcesser.waitAMonent(1);
-                            while (!mDevice.getInstance().click((w / 1080) * 830, (h / 1920) * 1145)) {
-                                mDevice.getInstance().click((w / 1080) * 830, (h / 1920) * 1145);
-                            }
-                            mProcesser.waitAMonent(3);
-                            // -------  点击 确定 提现
-                            while (!mDevice.getInstance().click((w / 1080) * 530, (h / 1920) * 1100)) {
-                                Thread.sleep(2000);
-                                mDevice.getInstance().click((w / 1080) * 530, (h / 1920) * 1100);
-                            }
+                        UiObject tixian = new UiObject(new UiSelector().className("android.widget.LinearLayout").resourceId("android.lite.clean:id/a28"));
+                        if (tixian.exists()) {
+                            tixian.click();
                         }
+                    } else {
+                        Log.e(TAG, "run: 当前不可提现  结束！！！！！");
+                        return;
                     }
-
+                    Log.e(TAG, "run:     ======  Thread.sleep(15*1000);=========== ");
+                    Thread.sleep(15 * 1000);//等待页面刷新
+                    Log.e(TAG, "run:     ======  Thread.sleep(15*1000);=========== ");
+                    //  838  1145
+                    if (jbNumberInt >= 100000) {
+                        Log.e(TAG, "run:     =================  jbNumberInt >= 100000  ======== 0  ========   ===" + w + "     " + h + "  ----  " + mDevice.hasObject(By.text("10元")));
+                        //830  970   大于十万金币的
+                        //--------- 点击 10元
+                        //input tap 540 660
+                        String result = rootCmd.execRootCmd(String.format("input tap %f %f", w / 1080 * 825, h / 1920 * 970));
+                        //String result =rootCmd.execRootCmd(String.format("input tap %f %f",555f, 660f));
+                        Log.e(TAG, "run:     =================  jbNumberInt >= 100000  ======= 1=====  =======" + result + mDevice.hasObject(By.text("10元")));
+                        //}
+                        mProcesser.waitAMonent(1);
+                        // -------  点击 立即提现
+                        result = rootCmd.execRootCmd(String.format("input tap %f %f", w / 1080 * 830, h / 1920 * 1145));
+                        //}
+                        Log.e(TAG, "run:     =================  jbNumberInt >= 100000  ======== 2 ===========" + result + mDevice.hasObject(By.text("10元")));
+                        mProcesser.waitAMonent(3);
+                        //  ----------  点击  确定 提现
+                        result = rootCmd.execRootCmd(String.format("input tap %f %f", w / 1080 * 530, h / 1920 * 1100));
+                        Log.e(TAG, "run:     =================  jbNumberInt >= 100000  ======== 3 ===========" + result + mDevice.hasObject(By.text("10元")));
+                        if (mDevice.hasObject(By.textContains("今日余额已被提空"))) {
+                            result = rootCmd.execRootCmd(String.format("input tap %f %f", w / 1080 * 535, h / 1920 * 980));
+                            Log.e(TAG, "run:     =================  今日余额已被提空  ===================" + result);
+                            result = rootCmd.execRootCmd(String.format("input tap %f %f", w / 1080 * 830, h / 1920 * 1145));
+                            Log.e(TAG, "run:     =================  今日余额已被提空  ===================" + result);
+                            result = rootCmd.execRootCmd(String.format("input tap %f %f", w / 1080 * 530, h / 1920 * 1100));
+                            Log.e(TAG, "run:     =================  今日余额已被提空  ===================" + result);
+                        }else {
+                            Log.e(TAG, "run:     =================  今日余额已被提空  =================== 未捕获到toast" );
+                        }
+                        //}
+                    } else {
+                        Log.e(TAG, "run:     =================   50000 < jbNumberInt < 100000  ===================");
+                        //大于五万金币小于十万金币的
+                        //--------- 点击 5元
+                        String result = rootCmd.execRootCmd(String.format("input tap %f %f", w / 1080 * 535, h / 1920 * 980));
+                        //}
+                        // -------  点击 立即提现
+                        mProcesser.waitAMonent(1);
+                        result = rootCmd.execRootCmd(String.format("input tap %f %f", w / 1080 * 830, h / 1920 * 1145));
+                        //}
+                        mProcesser.waitAMonent(3);
+                        // -------  点击 确定 提现
+                        result = rootCmd.execRootCmd(String.format("input tap %f %f", w / 1080 * 530, h / 1920 * 1100));
+                        //}
+                    }
+                    //}
+                    Log.e(TAG, "run:     =================  提现结束  ===================" + mDevice.hasObject(By.text("10元")));
+                    timerStop = false;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

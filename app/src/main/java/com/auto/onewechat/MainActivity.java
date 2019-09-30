@@ -25,7 +25,6 @@ import android.widget.Toast;
 import com.auto.onewechat.interfaces.InfoCallback;
 import com.auto.onewechat.utils.FileTools;
 
-
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "com.auto.onewechat";
@@ -84,9 +83,12 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         try {
-                            Log.e(TAG,"正在输出文件");
+                            Log.e(TAG, "正在输出文件");
                             FileTools fileTools = new FileTools();
-                            fileTools.writeTxtToFile(inPut+"\n", SDCARD, "WeChat_Number.txt");
+                            if (inPut == null) {
+                                inPut = userSettings.getString("olde_file", "");
+                            }
+                            fileTools.writeTxtToFile(inPut + "\n", SDCARD, "WeChat_Number.txt");
                             Thread.sleep(1000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
